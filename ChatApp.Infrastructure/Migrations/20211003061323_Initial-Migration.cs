@@ -3,23 +3,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ChatApp.Infrastructure.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Conversations",
+                name: "Conversation",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Conversations", x => x.Id);
+                    table.PrimaryKey("PK_Conversation", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -28,11 +28,11 @@ namespace ChatApp.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Messages",
+                name: "Message",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -44,11 +44,11 @@ namespace ChatApp.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.PrimaryKey("PK_Message", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_Conversations_ConversationId",
+                        name: "FK_Message_Conversation_ConversationId",
                         column: x => x.ConversationId,
-                        principalTable: "Conversations",
+                        principalTable: "Conversation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -64,15 +64,15 @@ namespace ChatApp.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_ConversationUser", x => new { x.ConversationsId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_ConversationUser_Conversations_ConversationsId",
+                        name: "FK_ConversationUser_Conversation_ConversationsId",
                         column: x => x.ConversationsId,
-                        principalTable: "Conversations",
+                        principalTable: "Conversation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ConversationUser_Users_UsersId",
+                        name: "FK_ConversationUser_User_UsersId",
                         column: x => x.UsersId,
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -83,8 +83,8 @@ namespace ChatApp.Infrastructure.Migrations
                 column: "UsersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ConversationId",
-                table: "Messages",
+                name: "IX_Message_ConversationId",
+                table: "Message",
                 column: "ConversationId");
         }
 
@@ -94,13 +94,13 @@ namespace ChatApp.Infrastructure.Migrations
                 name: "ConversationUser");
 
             migrationBuilder.DropTable(
-                name: "Messages");
+                name: "Message");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "Conversations");
+                name: "Conversation");
         }
     }
 }

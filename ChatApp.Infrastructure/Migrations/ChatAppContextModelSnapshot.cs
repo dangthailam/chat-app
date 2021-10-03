@@ -27,7 +27,7 @@ namespace ChatApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conversations");
+                    b.ToTable("Conversation");
                 });
 
             modelBuilder.Entity("ChatApp.Infrastructure.Entities.Message", b =>
@@ -55,7 +55,7 @@ namespace ChatApp.Infrastructure.Migrations
 
                     b.HasIndex("ConversationId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("ChatApp.Infrastructure.Entities.User", b =>
@@ -72,7 +72,7 @@ namespace ChatApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("ConversationUser", b =>

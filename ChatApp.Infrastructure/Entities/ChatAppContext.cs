@@ -1,6 +1,9 @@
 using System;
+using System.IO;
 using ChatApp.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace ChatApp.Infrastructure
 {
@@ -10,18 +13,33 @@ namespace ChatApp.Infrastructure
         public DbSet<Message> Messages { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
 
-        public string DbPath { get; private set; }
+        public string ConnectionString { get; private set; }
 
-        public ChatAppContext()
+        public ChatAppContext(DbContextOptions<ChatAppContext> options) : base(options)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = $"{path}{System.IO.Path.DirectorySeparatorChar}blogging.db";
         }
 
-        // The following configures EF to create a Sqlite database file in the
-        // special "local" folder for your platform.
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlServer($"Data Source={DbPath}");
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().ToTable("User");
+            modelBuilder.Entity<Message>().ToTable("Message");
+            modelBuilder.Entity<Conversation>().ToTable("Conversation");
+        }
+    }
+
+    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ChatAppContext>
+    {
+        public ChatAppContext CreateDbContext(string[] args)
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(@Directory.GetCurrentDirectory() + "/../ChatApp.UI/appsettings.json")
+                .Build();
+            var builder = new DbContextOptionsBuilder<ChatAppContext>();
+            var connectionString = configuration.GetConnectionString("ChatAppContext");
+            builder.UseSqlServer(connectionString);
+            return new ChatAppContext(builder.Options);
+        }
     }
 }
