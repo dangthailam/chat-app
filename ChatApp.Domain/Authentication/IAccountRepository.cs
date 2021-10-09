@@ -3,6 +3,8 @@ namespace ChatApp.Domain.Authentication
 {
     public interface IAccountRepository
     {
-        public Account CreateAccount(Account newAccount);
+        void CreateAccount(Account newAccount);
+
+        Account GetAccountByEmail(string email);
     }
 }

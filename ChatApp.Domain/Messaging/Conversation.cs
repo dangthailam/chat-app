@@ -6,6 +6,7 @@ namespace ChatApp.Domain
 {
     public class Conversation
     {
+
         public Guid Id { get; set; }
         public IList<User> Participants { get; set; }
         public IList<Message> Messages { get; set; }

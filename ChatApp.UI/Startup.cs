@@ -1,4 +1,6 @@
-﻿using ChatApp.Infrastructure;
+﻿using ChatApp.Domain.Authentication;
+using ChatApp.Infrastructure;
+using ChatApp.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -26,6 +28,8 @@ namespace ChatApp.UI
             services.AddSwaggerGen();
 
             services.AddDbContext<ChatAppContext>(options => options.UseSqlServer("name=ConnectionStrings:ChatAppContext"));
+
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

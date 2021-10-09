@@ -1,0 +1,4 @@
+namespace ChatApp.Infrastructure.Repositories
+{
+
+}
