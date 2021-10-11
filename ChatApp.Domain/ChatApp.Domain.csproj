@@ -5,11 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="9.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ChatApp.Common\ChatApp.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Common\" />
+    <None Remove="Events\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Events\" />
+  </ItemGroup>
 </Project>

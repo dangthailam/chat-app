@@ -4,10 +4,11 @@ using ChatApp.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ChatApp.Infrastructure
 {
-    public class ChatAppContext : DbContext
+    public class ChatAppContext : IdentityDbContext<User>
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Message> Messages { get; set; }

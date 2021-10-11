@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
+
 namespace ChatApp.Domain.Authentication
 {
     public interface IAccountRepository
     {
-        void CreateAccount(Account newAccount);
+        Task CreateAccount(Account newAccount);
 
-        Account GetAccountByEmail(string email);
+        Task<Account> GetAccountByEmail(string email);
     }
 }

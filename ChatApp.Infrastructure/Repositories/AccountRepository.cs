@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using ChatApp.Domain;
 using ChatApp.Domain.Authentication;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChatApp.Infrastructure.Repositories
 {
@@ -9,7 +11,8 @@ namespace ChatApp.Infrastructure.Repositories
     {
         private readonly ChatAppContext context;
         public AccountRepository(ChatAppContext context) => this.context = context;
-        public void CreateAccount(Account newAccount)
+
+        public async Task CreateAccount(Account newAccount)
         {
             context.Users.Add(new Entities.User
             {
@@ -19,12 +22,12 @@ namespace ChatApp.Infrastructure.Repositories
                 Salt = newAccount.Salt
             });
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public Account GetAccountByEmail(string email)
+        public async Task<Account> GetAccountByEmail(string email)
         {
-            var user = context.Users.FirstOrDefault(u => u.Email == email);
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null) return null;
 

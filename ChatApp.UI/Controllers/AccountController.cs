@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using ChatApp.Common;
 using ChatApp.Domain;
 using ChatApp.Domain.Authentication;
+using ChatApp.UI.Commands.Authentication;
 using ChatApp.UI.ViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,18 +18,19 @@ namespace ChatApp.UI.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly IAccountRepository accountRepository;
+        private readonly IMediator _mediator;
 
-        public AccountController(IAccountRepository accountRepository)
+        public AccountController(IMediator mediator)
         {
-            this.accountRepository = accountRepository;
+            _mediator = mediator;
         }
 
         [HttpPost("/register")]
-        public void Register(AuthenticationModel model)
+        public async Task<IActionResult> Register(RegisterUserCommand command)
         {
-            Account newAccount = Account.NewAccount(model.Email, model.Password);
-            accountRepository.CreateAccount(newAccount);
+            Guid newUserId = await _mediator.Send(command);
+
+            return Ok(newUserId);
         }
 
         [HttpPost("/login")]
